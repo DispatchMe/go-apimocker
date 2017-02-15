@@ -25,6 +25,14 @@ func (r *Request) ExpectHeader(k, v string) *Request {
 	return r
 }
 
+func (r *Request) ExpectQuery(k, v string) *Request {
+	val := r.req.URL.Query().Get(k)
+	if val != v {
+		r.t.Errorf("Expected query param %s to equal %s (got %s)", k, v, val)
+	}
+	return r
+}
+
 func (r *Request) checkContentType(expected string) bool {
 	ct := r.req.Header.Get("Content-Type")
 	return ct == expected
